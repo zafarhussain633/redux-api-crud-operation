@@ -1,22 +1,23 @@
-import axios from "axios"
+import userService from "./service"
+import constants from "./constant"
 
 
 const getUser = () => async dispatch => {
 
     dispatch({
-        type: "LOADING_USER"
+        type: constants.LOADING_USER
     })
 
     try {
-        const { data } = await axios.get("https://61ad9197d228a9001703ae3b.mockapi.io/detail");
+        const nameList = await userService.getALLName();
         dispatch({
-            type: "SUCCESS_USER",
-            payload: data
+            type: constants.SUCCESS_USER,
+            payload: nameList
         })
 
     } catch (err) {
         dispatch({
-            type: "FAILED_USER",
+            type: constants.FAILED_USER,
             payload: err
         })
 
@@ -27,21 +28,21 @@ const getUser = () => async dispatch => {
 const AddUser = (name) => async dispatch => {
 
     dispatch({
-        type: "ADDING_USER"
+        type: constants.ADDING_USER
     })
 
     try {
-        await axios.post("https://61ad9197d228a9001703ae3b.mockapi.io/detail", { name: name });  // it will only add data to api 
-        const { data: updatedList } = await axios.get(`https://61ad9197d228a9001703ae3b.mockapi.io/detail`); // return updated data with newly added data
+        await userService.addName(name)
+        const nameList = await userService.getALLName(); // nameList after adding
 
         dispatch({
-            type: "USER_ADDED",
-            payload: updatedList
+            type: constants.USER_ADDED,
+            payload: nameList
         })
 
     } catch (err) {
         dispatch({
-            type: "FAILED_TO_ADD",
+            type: constants.FAILED_TO_ADD,
             payload: err
         })
 
@@ -52,21 +53,21 @@ const AddUser = (name) => async dispatch => {
 const RemoveUser = (id) => async dispatch => {
 
     dispatch({
-        type: "REMOOVING_USER"
+        type: constants.REMOOVING_USER
     })
-
+    
     try {
-        await axios.delete(`https://61ad9197d228a9001703ae3b.mockapi.io/detail/${id}`);   // it will remoove the data according to id
-        const { data: updatedList } = await axios.get(`https://61ad9197d228a9001703ae3b.mockapi.io/detail`);  //it will return updated list after removing data 
+        await userService.deleteName(id);
+        const nameList = await userService.getALLName(); // nameList after removing
 
         dispatch({
-            type: "USER_REMOVED",
-            payload: updatedList
+            type: constants.USER_REMOVED,
+            payload: nameList
         })
 
     } catch (err) {
         dispatch({
-            type: "FAILED_TO_REMOVE",
+            type: constants.FAILED_TO_REMOVE,
             payload: err
         })
 
@@ -76,20 +77,21 @@ const RemoveUser = (id) => async dispatch => {
 const UpdateUser = (id, name) => async dispatch => {
 
     dispatch({
-        type: "UPDATING_USER"
+        type: constants.UPDATING_USER
     })
 
     try {
-        await axios.put(`https://61ad9197d228a9001703ae3b.mockapi.io/detail/${id}`, { name: name }); // it will only update data in api 
-        const { data: updatedList } = await axios.get(`https://61ad9197d228a9001703ae3b.mockapi.io/detail`);  // return list after updatin user name 
+
+        await userService.updateName(id, name);  // it will only update data in api 
+        const nameList = await userService.getALLName(); // nameList after updating
         dispatch({
-            type: "USER_UPDATED",
-            payload: updatedList  // updated data will store into payload which will show in list
+            type: constants.USER_UPDATED,
+            payload: nameList  // updated data will store into payload which will show in list
         })
 
     } catch (err) {
         dispatch({
-            type: "FAILED_TO_UPDATE",
+            type: constants.FAILED_TO_UPDATE,
             payload: err
         })
 
