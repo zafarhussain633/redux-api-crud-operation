@@ -1,24 +1,25 @@
 
 import axios from "axios"
+import {baseUrl} from "./../config"
 
 const getALLName = async () => {
-    const { data } = await axios.get("https://61ad9197d228a9001703ae3b.mockapi.io/detail");
+    const { data } = await axios.get(baseUrl);
     return data
 }
 
 
 const addName = async (name) => {
-  await axios.post("https://61ad9197d228a9001703ae3b.mockapi.io/detail", { name: name });  // it will only add data to api 
+  await axios.post(baseUrl, { name: name });  // it will only add data to api 
 }
 
 
 const updateName = async (id, name) => {
-    await axios.put(`https://61ad9197d228a9001703ae3b.mockapi.io/detail/${id}`, { name: name });
+    await axios.put(`${baseUrl}${id}`, { name: name });
 }
 
 
 const deleteName = async (id) => {
-    await axios.delete(`https://61ad9197d228a9001703ae3b.mockapi.io/detail/${id}`);   // it will remoove the data according to id
+    await axios.delete(`${baseUrl}${id}`);   // it will remoove the data according to id
 }
 
 
