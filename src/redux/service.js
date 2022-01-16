@@ -19,7 +19,7 @@ const updateName = async (id, name) => {
 
 
 const deleteName = async (id) => {
-    await axios.delete(`${baseUrl}${id}`);   // it will remoove the data according to id
+    await axios.delete(`${baseUrl}${id}`);   // it will remoove the data according to id 
 }
 
 
